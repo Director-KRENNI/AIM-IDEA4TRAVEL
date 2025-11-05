@@ -1,1 +1,1 @@
-Bu proje THY-Genç Musiad işbirliğinde düzenlenen İDEA4TRAVEL yarışması için yapılmıştır. Bu projede havacılıktaki bagaj problemine değinip, problemin çözülmesi için RFID çip sistemi ile çalışan bir çözüm sunduk. 
+
