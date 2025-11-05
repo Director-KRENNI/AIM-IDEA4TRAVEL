@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                             QDialog, QLineEdit, QHBoxLayout, QMessageBox)
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
-# Başlangıç havalimanı ve COM port eşleşmeleri
+
 ucak_com_portlari = {
     "IST -> VCE (13.00)": "COM3",
     "IST -> AAL (17.00)": "COM4",
@@ -24,7 +24,7 @@ ucak_com_portlari = {
     "IST -> SDY (05.45)": "COM12"
 }
 
-# Veri yapıları
+
 ucak_bagajlari = {ucak: set() for ucak in ucak_com_portlari}
 rfid_to_ucak = {}
 
@@ -211,12 +211,10 @@ class RFIDApp(QMainWindow):
     def ucak_sil(self):
         secili_ucak = self.ucak_secim.currentText()
         
-        if secili_ucak in ucak_com_portlari:
-            # Uçağın bagaj verilerini ve COM portunu temizle
-            del ucak_com_portlari[secili_ucak]
-            del ucak_bagajlari[secili_ucak]
+        
             
-            # Eğer RFID uçağa bağlıysa, sil
+            
+            
             rfid_to_remove = [rfid for rfid, ucm in rfid_to_ucak.items() if ucm == secili_ucak]
             for rfid in rfid_to_remove:
                 del rfid_to_ucak[rfid]
@@ -244,21 +242,21 @@ class RFIDApp(QMainWindow):
             self.cikti_alanı.append("❌ Geçersiz COM port!")
             return
 
-        # Yeni bir QThread ve SerialWorker başlat
+        
         self.current_thread = QThread()
         self.current_worker = SerialWorker(com_port)
         self.current_worker.moveToThread(self.current_thread)
         
-        # Worker ile bağlantı sağlanacak sinyalleri bağla
+        
         self.current_worker.connection_status.connect(self.handle_connection_status)
         self.current_worker.data_received.connect(self.handle_rfid)
         self.current_worker.error_occurred.connect(self.handle_error)
         
-        # Thread başladığında worker'ın start_reading metodunu çağır
+        
         self.current_thread.started.connect(self.current_worker.start_reading)
         self.current_thread.finished.connect(self.cleanup_connection)
         
-        # Yeni bağlantıyı başlat
+      
         self.current_thread.start()
 
     def handle_connection_status(self, status):
@@ -279,7 +277,7 @@ class RFIDApp(QMainWindow):
             self.current_thread.quit()  # Thread'i sonlandır
             self.current_thread.wait()  # Thread'in tamamlanmasını bekle
 
-        # Mevcut bağlantı sonlandırıldığında UI'de buna göre işlem yap
+        
         self.baslat_buton.setText("Bağlan ve RFID Oku")
         self.cikti_alanı.append("🔌 Bağlantı kesildi")
 
